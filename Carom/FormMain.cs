@@ -35,7 +35,12 @@ namespace Carom {
         }
 
         private void CalcRoute() {
-            // 1. cushion 1,2,3,4 충돌 체크, ball 1,2,3 충돌 체크
+            // 1. Cue1, Dir 볼로 Line생성
+            // do {
+            // 2. cushion 1,2,3,4 충돌 체크, ball 1,2,3 충돌 체크
+            // 3. 충돌이 있다 가장 가까운 충돌점, 반사벡터로 Line생성
+            // 4. ball 이 충돌이라면 충돌된 ball 은 충돌체크 아이템에서 제거
+            // } while (has collision)
         }
 
         private RectangleF WoodRect {
