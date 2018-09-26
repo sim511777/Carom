@@ -192,33 +192,23 @@ namespace Carom {
         private void pbxTable_MouseMove(object sender, MouseEventArgs e) {
             if (this.pickBallIdx == -1)
                 return;
-            var newPt = this.pbxTable.DrawToReal(e.Location) + new SizeF(this.pickOffset);
+            var oldPt = Glb.PointFToVector2(this.balls[this.pickBallIdx]);
+            var newPt = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location) + new SizeF(this.pickOffset));
             newPt.X = newPt.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
             newPt.Y = newPt.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
-            
-            // 거리가 가장 가까운 볼을 찾는다
-            // 거리를 구한다
-            // 거리가 볼사이즈 보다 크거나 같으면 패스
-            // 작으면 이전 위치에서 새 위치의 방향으로 볼에 닫는 거리만큼만 이동 
-            int closestIdx = -1;
-            float closestDistSq = float.MaxValue;
-            for (int i=0; i<this.balls.Length; i++) {
-                if (i == this.pickBallIdx)
-                    continue;
-                float distSq = GetDistanceSq(this.balls[i], newPt);
-                if (distSq < closestDistSq) {
-                    closestIdx = i;
-                    closestDistSq = distSq;
-                }
-            }
-            if (closestDistSq < Settings.Default.BallDiameter*Settings.Default.BallDiameter) {
-                Vector2 vOld = new Vector2(this.balls[this.pickBallIdx].X, this.balls[this.pickBallIdx].Y);
-                Vector2 vNew = new Vector2(newPt.X, newPt.Y);
-                Vector2 vColide = new Vector2(this.balls[closestIdx].X, this.balls[closestIdx].X);
-                //Vector2.Normalize(vNew-vOld)*vColide-vN
+
+            // 나머지 3개의 볼에 대해 충돌점을 찾는다.
+            // 충돌점들 중 가장 가까운 충돌점으로 이동
+            var collisions = this.balls
+                .Where((ball, idx) => idx != pickBallIdx)
+                .Select(ball => Glb.FindPointCircleIntersections(Glb.PointFToVector2(ball), Settings.Default.BallDiameter, newPt))
+                .Where(ball => ball != null)
+                .OrderBy(collision => Vector2.Distance((Vector2)collision, oldPt));
+            if (collisions.Count() > 0) {
+                newPt = (Vector2)collisions.ElementAt(0);
             }
 
-            this.balls[this.pickBallIdx] = newPt;
+            this.balls[this.pickBallIdx] = Glb.Vector2ToPointF(newPt);
             this.CalcRoute();
             this.Refresh();
         }
