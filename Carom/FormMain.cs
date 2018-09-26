@@ -13,7 +13,7 @@ using Carom.Properties;
 
 namespace Carom {
     public partial class FormMain : Form {
-        PointF[] balls;
+        Vector2[] balls;
 
         public FormMain() {
             InitializeComponent();
@@ -23,18 +23,18 @@ namespace Carom {
         }
 
         private void InitBalls() {
-            this.balls = new PointF[] {
-                new PointF(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 2),
-                new PointF(Settings.Default.AreaWidth*3/8, 0),
-                new PointF(Settings.Default.AreaWidth/4, 0),
-                new PointF(-Settings.Default.AreaWidth/4, 0),
+            this.balls = new Vector2[] {
+                new Vector2(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 2),
+                new Vector2(Settings.Default.AreaWidth*3/8, 0),
+                new Vector2(Settings.Default.AreaWidth/4, 0),
+                new Vector2(-Settings.Default.AreaWidth/4, 0),
             };
             this.CalcRoute();
             this.Refresh();
         }
 
         private void CalcRoute() {
-
+            // 1. cushion 1,2,3,4 충돌 체크, ball 1,2,3 충돌 체크
         }
 
         private RectangleF WoodRect {
@@ -86,19 +86,19 @@ namespace Carom {
         private void DrawPoints(Graphics g) {
             Brush brPoint = new SolidBrush(Settings.Default.PointColor);
             
-            List<PointF> pointPts = new List<PointF>();
+            List<Vector2> pointPts = new List<Vector2>();
             float xStep = Settings.Default.AreaWidth / 8;
             for (int i=-4; i<=4; i++) {
-                pointPts.Add(new PointF(xStep*i, -Settings.Default.AreaHeight/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2));
-                pointPts.Add(new PointF(xStep*i, Settings.Default.AreaHeight/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2));
+                pointPts.Add(new Vector2(xStep*i, -Settings.Default.AreaHeight/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2));
+                pointPts.Add(new Vector2(xStep*i, Settings.Default.AreaHeight/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2));
             }
             float yStep = Settings.Default.AreaHeight / 4;
             for (int i=-2; i<=2; i++) {
-                pointPts.Add(new PointF(-Settings.Default.AreaWidth/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2, yStep*i));
-                pointPts.Add(new PointF(Settings.Default.AreaWidth/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2, yStep*i));
+                pointPts.Add(new Vector2(-Settings.Default.AreaWidth/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2, yStep*i));
+                pointPts.Add(new Vector2(Settings.Default.AreaWidth/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2, yStep*i));
             }
             foreach (var pointPt in pointPts) {
-                var realRect = this.PointToRect(pointPt, Settings.Default.PointDiameter);
+                var realRect = this.VectorToRect(pointPt, Settings.Default.PointDiameter);
                 var drawRect = this.pbxTable.RealToDrawRect(realRect);
                 g.FillEllipse(brPoint, drawRect);
             }
@@ -106,8 +106,8 @@ namespace Carom {
             brPoint.Dispose();
         }
 
-        private RectangleF PointToRect(PointF pt, float size) {
-            return new RectangleF(pt.X-size/2, pt.Y-size/2, size, size);
+        private RectangleF VectorToRect(Vector2 v, float size) {
+            return new RectangleF(v.X-size/2, v.Y-size/2, size, size);
         }
 
         private void DrawBalls(Graphics g) {
@@ -116,10 +116,10 @@ namespace Carom {
             Brush brObj1 = new SolidBrush(Settings.Default.ObjBall1Color);
             Brush brObj2 = new SolidBrush(Settings.Default.ObjBall2Color);
 
-            g.FillEllipse(brCue1, this.pbxTable.RealToDrawRect(this.PointToRect(this.balls[0], Settings.Default.BallDiameter)));
-            g.FillEllipse(brCue2, this.pbxTable.RealToDrawRect(this.PointToRect(this.balls[1], Settings.Default.BallDiameter)));
-            g.FillEllipse(brObj1, this.pbxTable.RealToDrawRect(this.PointToRect(this.balls[2], Settings.Default.BallDiameter)));
-            g.FillEllipse(brObj2, this.pbxTable.RealToDrawRect(this.PointToRect(this.balls[3], Settings.Default.BallDiameter)));
+            g.FillEllipse(brCue1, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[0], Settings.Default.BallDiameter)));
+            g.FillEllipse(brCue2, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[1], Settings.Default.BallDiameter)));
+            g.FillEllipse(brObj1, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[2], Settings.Default.BallDiameter)));
+            g.FillEllipse(brObj2, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[3], Settings.Default.BallDiameter)));
 
             brCue1.Dispose();
             brCue2.Dispose();
@@ -153,21 +153,15 @@ namespace Carom {
             this.pbxTable.Refresh();
         }
 
-        private float GetDistanceSq(PointF pt1, PointF pt2) {
-            float dx = pt1.X - pt2.X;
-            float dy = pt1.Y - pt2.Y;
-            return dx*dx + dy*dy;
-        }
-
         int pickBallIdx = -1;
-        PointF pickOffset;
-        PointF pickPt;
+        Vector2 pickOffset;
+        Vector2 pickPt;
         private void pbxTable_MouseDown(object sender, MouseEventArgs e) {
-            var ptReal = this.pbxTable.DrawToReal(e.Location);
+            var ptReal = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location));
             int closestIdx = -1;
             float closestDistSq = float.MaxValue;
             for (int i=0; i<this.balls.Length; i++) {
-                float distSq = GetDistanceSq(this.balls[i], ptReal);
+                float distSq = Vector2.DistanceSquared(this.balls[i], ptReal);
                 if (distSq < closestDistSq) {
                     closestIdx = i;
                     closestDistSq = distSq;
@@ -177,7 +171,7 @@ namespace Carom {
             if (closestDistSq <= Settings.Default.BallDiameter*Settings.Default.BallDiameter/4) {
                 this.pickBallIdx = closestIdx;
                 this.pickPt = ptReal;
-                this.pickOffset = this.balls[closestIdx] - new SizeF(ptReal);
+                this.pickOffset = this.balls[closestIdx] - ptReal;
                 this.pbxTable.EnableMousePan = false;
             }
         }
@@ -192,8 +186,8 @@ namespace Carom {
         private void pbxTable_MouseMove(object sender, MouseEventArgs e) {
             if (this.pickBallIdx == -1)
                 return;
-            var oldPt = Glb.PointFToVector2(this.balls[this.pickBallIdx]);
-            var newPt = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location) + new SizeF(this.pickOffset));
+            var oldPt = this.balls[this.pickBallIdx];
+            var newPt = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location)) + this.pickOffset;
             newPt.X = newPt.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
             newPt.Y = newPt.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
 
@@ -201,14 +195,14 @@ namespace Carom {
             // 충돌점들 중 가장 가까운 충돌점으로 이동
             var collisions = this.balls
                 .Where((ball, idx) => idx != pickBallIdx)
-                .Select(ball => Glb.FindPointCircleIntersections(Glb.PointFToVector2(ball), Settings.Default.BallDiameter, newPt))
+                .Select(ball => Glb.FindPointCircleIntersections(ball, Settings.Default.BallDiameter, newPt))
                 .Where(ball => ball != null)
                 .OrderBy(collision => Vector2.Distance((Vector2)collision, oldPt));
             if (collisions.Count() > 0) {
                 newPt = (Vector2)collisions.ElementAt(0);
             }
 
-            this.balls[this.pickBallIdx] = Glb.Vector2ToPointF(newPt);
+            this.balls[this.pickBallIdx] = newPt;
             this.CalcRoute();
             this.Refresh();
         }
