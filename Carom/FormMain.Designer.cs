@@ -24,11 +24,11 @@
         /// </summary>
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnInitBalls = new System.Windows.Forms.Button();
             this.btnZoomFit = new System.Windows.Forms.Button();
             this.grdProp = new System.Windows.Forms.PropertyGrid();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pbxTable = new Carom.ZoomPictureBox();
-            this.btnInitBalls = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxTable)).BeginInit();
             this.SuspendLayout();
@@ -39,14 +39,26 @@
             this.panel1.Controls.Add(this.btnZoomFit);
             this.panel1.Controls.Add(this.grdProp);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(562, 0);
+            this.panel1.Location = new System.Drawing.Point(611, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(258, 438);
+            this.panel1.Size = new System.Drawing.Size(258, 498);
             this.panel1.TabIndex = 0;
+            // 
+            // btnInitBalls
+            // 
+            this.btnInitBalls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnInitBalls.Location = new System.Drawing.Point(87, 472);
+            this.btnInitBalls.Name = "btnInitBalls";
+            this.btnInitBalls.Size = new System.Drawing.Size(75, 23);
+            this.btnInitBalls.TabIndex = 2;
+            this.btnInitBalls.Text = "Init Balls";
+            this.btnInitBalls.UseVisualStyleBackColor = true;
+            this.btnInitBalls.Click += new System.EventHandler(this.btnInitBalls_Click);
             // 
             // btnZoomFit
             // 
-            this.btnZoomFit.Location = new System.Drawing.Point(6, 207);
+            this.btnZoomFit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnZoomFit.Location = new System.Drawing.Point(6, 472);
             this.btnZoomFit.Name = "btnZoomFit";
             this.btnZoomFit.Size = new System.Drawing.Size(75, 23);
             this.btnZoomFit.TabIndex = 1;
@@ -56,21 +68,22 @@
             // 
             // grdProp
             // 
-            this.grdProp.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grdProp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.grdProp.HelpVisible = false;
             this.grdProp.Location = new System.Drawing.Point(0, 0);
             this.grdProp.Name = "grdProp";
             this.grdProp.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grdProp.Size = new System.Drawing.Size(258, 201);
+            this.grdProp.Size = new System.Drawing.Size(258, 466);
             this.grdProp.TabIndex = 0;
             this.grdProp.ToolbarVisible = false;
             this.grdProp.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdProp_PropertyValueChanged);
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 438);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 498);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(820, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(869, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -91,7 +104,7 @@
             this.pbxTable.Location = new System.Drawing.Point(0, 0);
             this.pbxTable.Name = "pbxTable";
             this.pbxTable.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbxTable.Size = new System.Drawing.Size(562, 438);
+            this.pbxTable.Size = new System.Drawing.Size(611, 498);
             this.pbxTable.TabIndex = 2;
             this.pbxTable.TabStop = false;
             this.pbxTable.UseDrawPixelValue = true;
@@ -104,21 +117,11 @@
             this.pbxTable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbxTable_MouseMove);
             this.pbxTable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbxTable_MouseUp);
             // 
-            // btnInitBalls
-            // 
-            this.btnInitBalls.Location = new System.Drawing.Point(6, 236);
-            this.btnInitBalls.Name = "btnInitBalls";
-            this.btnInitBalls.Size = new System.Drawing.Size(75, 23);
-            this.btnInitBalls.TabIndex = 2;
-            this.btnInitBalls.Text = "Init Balls";
-            this.btnInitBalls.UseVisualStyleBackColor = true;
-            this.btnInitBalls.Click += new System.EventHandler(this.btnInitBalls_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 460);
+            this.ClientSize = new System.Drawing.Size(869, 520);
             this.Controls.Add(this.pbxTable);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);

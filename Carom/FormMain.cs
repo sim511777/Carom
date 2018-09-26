@@ -13,7 +13,7 @@ using Carom.Properties;
 
 namespace Carom {
     public partial class FormMain : Form {
-        Vector2[] balls;
+        Vector2[] balls;    // Cue1, Cue2, Obj1, Obj2, Dir
 
         public FormMain() {
             InitializeComponent();
@@ -28,6 +28,7 @@ namespace Carom {
                 new Vector2(Settings.Default.AreaWidth*3/8, 0),
                 new Vector2(Settings.Default.AreaWidth/4, 0),
                 new Vector2(-Settings.Default.AreaWidth/4, 0),
+                new Vector2(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter / 2),
             };
             this.CalcRoute();
             this.Refresh();
@@ -125,6 +126,8 @@ namespace Carom {
             brCue2.Dispose();
             brObj1.Dispose();
             brObj2.Dispose();
+
+            g.DrawEllipse(Pens.Black, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[4], Settings.Default.BallDiameter)));
         }
 
         private void ZoomToTable() {
@@ -188,20 +191,21 @@ namespace Carom {
                 return;
             var oldPt = this.balls[this.pickBallIdx];
             var newPt = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location)) + this.pickOffset;
-            newPt.X = newPt.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
-            newPt.Y = newPt.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
 
-            // 나머지 3개의 볼에 대해 충돌점을 찾는다.
-            // 충돌점들 중 가장 가까운 충돌점으로 이동
-            var collisions = this.balls
-                .Where((ball, idx) => idx != pickBallIdx)
-                .Select(ball => Glb.FindPointCircleIntersections(ball, Settings.Default.BallDiameter, newPt))
-                .Where(ball => ball != null)
-                .OrderBy(collision => Vector2.Distance((Vector2)collision, oldPt));
-            if (collisions.Count() > 0) {
-                newPt = (Vector2)collisions.ElementAt(0);
+            if (this.pickBallIdx != 4) {
+                newPt.X = newPt.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
+                newPt.Y = newPt.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
+                // 나머지 3개의 볼에 대해 충돌점을 찾는다.
+                // 충돌점들 중 가장 가까운 충돌점으로 이동
+                var collisions = this.balls
+                    .Where((ball, idx) => idx != pickBallIdx && idx != 4)
+                    .Select(ball => Glb.FindPointCircleIntersections(ball, Settings.Default.BallDiameter, newPt))
+                    .Where(ball => ball != null)
+                    .OrderBy(collision => Vector2.Distance((Vector2)collision, oldPt));
+                if (collisions.Count() > 0) {
+                    newPt = (Vector2)collisions.ElementAt(0);
+                }
             }
-
             this.balls[this.pickBallIdx] = newPt;
             this.CalcRoute();
             this.Refresh();
