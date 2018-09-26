@@ -1,25 +1,26 @@
-ok 1. 당구대 크기 2448x1224mm
-ok 2. 당구공 크기 65.5mm
-ok 3. 쿠션 두께 50mm
-ok 4. 우드 두께 100mm
-ok 5. 포인트 사이즈 20mm
-ok 7. 쿠션 컬러 Green
-ok 8. 우드 컬러 Brown
-ok 9. 포인트 컬러 White
-ok 10. 라인컬러 Black
-ok 4. 설정모듈로 Properties.Settings 사용할 것
-ok 5. 설정모듈 로드 세이브
-ok 6. 설정모듈 프로퍼티그리드 연동
-ok 7. ZoomWindow Rect Fit
-ok 8. Table 그리기
-ok 9. Point 그리기
-ok 10. Ball 그리기
-11. 마우스로 공 이동
+ok 1. 설정
+ok - 당구대 크기 2448x1224mm
+ok - 당구공 크기 65.5mm
+ok - 쿠션 두께 50mm
+ok - 우드 두께 100mm
+ok - 포인트 사이즈 20mm
+ok - 쿠션 컬러 Green
+ok - 우드 컬러 Brown
+ok - 포인트 컬러 White
+ok - 라인컬러 Black
+ok 1. 설정모듈로 Properties.Settings 사용할 것
+ok 1. 설정모듈 로드 세이브
+ok 1. 설정모듈 프로퍼티그리드 연동
+ok 1. ZoomWindow Rect Fit
+ok 1. Table 그리기
+ok 1. Point 그리기
+ok 1. Ball 그리기
+ok 1. Github에 올리기
+ok 1. 마우스로 공 이동
 ok - 공 마우스 다운시 공 이동/그 외에는 마우스 Panning
- - 이동시 Area 안에 들어오기
- - 이동시 공이 겹치면 이동 안함
-12. 공 포지션 setting시에 궤적 계산 하기
-13. 공 마우스 궤적 그리기
-14. Github에 올리기
-15. 파워 이동 감쇠
-16. 당점 회전 신네루 궤적 변경
+ok - 이동시 Area 안에 들어오기
+- 이동시 공이 겹치면 이동 안함
+1. 공 포지션 setting시에 궤적 계산 하기
+1. 공 마우스 궤적 그리기
+1. 파워 이동 감쇠
+1. 당점 회전 신네루 궤적 변경

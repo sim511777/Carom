@@ -278,12 +278,12 @@ namespace Carom {
 
         private void ZoomPictureBox_MouseUp(object sender, MouseEventArgs e) {
             this.mousePan = false;
+
             if (this.EnableMousePan == false)
                 return;
 
             if (e.Button != MouseButtons.Left)
                 return;
-            this.mousePan = false;
         }
 
         private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {
@@ -292,16 +292,6 @@ namespace Carom {
                 this.ptOld = e.Location;
             }
             this.Invalidate();
-        }
-    }
-
-    public static class ExtensionMethods {
-        public static T Range<T>(this T value, T min, T max) where T : IComparable {
-            if (value.CompareTo(min as IComparable) < 0)
-                return min;
-            if (value.CompareTo(max as IComparable) > 0)
-                return max;
-            return value;
         }
     }
 }
