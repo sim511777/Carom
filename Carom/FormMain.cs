@@ -165,11 +165,12 @@ namespace Carom {
         Vector2 pickOffset;
         Vector2 pickPt;
         private void pbxTable_MouseDown(object sender, MouseEventArgs e) {
-            var ptReal = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location));
+            var ptReal = this.pbxTable.DrawToReal(e.Location);
+            var vReal = new Vector2(ptReal.X, ptReal.Y);
             int closestIdx = -1;
             float closestDistSq = float.MaxValue;
             for (int i=0; i<this.balls.Length; i++) {
-                float distSq = Vector2.DistanceSquared(this.balls[i], ptReal);
+                float distSq = Vector2.DistanceSquared(this.balls[i], vReal);
                 if (distSq < closestDistSq) {
                     closestIdx = i;
                     closestDistSq = distSq;
@@ -178,8 +179,8 @@ namespace Carom {
 
             if (closestDistSq <= Settings.Default.BallDiameter*Settings.Default.BallDiameter/4) {
                 this.pickBallIdx = closestIdx;
-                this.pickPt = ptReal;
-                this.pickOffset = this.balls[closestIdx] - ptReal;
+                this.pickPt = vReal;
+                this.pickOffset = this.balls[closestIdx] - vReal;
                 this.pbxTable.EnableMousePan = false;
             }
         }
@@ -194,24 +195,25 @@ namespace Carom {
         private void pbxTable_MouseMove(object sender, MouseEventArgs e) {
             if (this.pickBallIdx == -1)
                 return;
-            var oldPt = this.balls[this.pickBallIdx];
-            var newPt = Glb.PointFToVector2(this.pbxTable.DrawToReal(e.Location)) + this.pickOffset;
+            var vOld = this.balls[this.pickBallIdx];
+            var ptNew = this.pbxTable.DrawToReal(e.Location);
+            var vNew = new Vector2(ptNew.X, ptNew.Y) + this.pickOffset;
 
             if (this.pickBallIdx != 4) {
-                newPt.X = newPt.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
-                newPt.Y = newPt.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
+                vNew.X = vNew.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
+                vNew.Y = vNew.Y.Range(-Settings.Default.AreaHeight/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaHeight/2 - Settings.Default.BallDiameter/2);
                 // 나머지 3개의 볼에 대해 충돌점을 찾는다.
                 // 충돌점들 중 가장 가까운 충돌점으로 이동
                 var collisions = this.balls
                     .Where((ball, idx) => idx != pickBallIdx && idx != 4)
-                    .Select(ball => Glb.FindPointCircleIntersections(ball, Settings.Default.BallDiameter, newPt))
+                    .Select(ball => Glb.FindCirclePointCollision(ball, Settings.Default.BallDiameter, vNew))
                     .Where(ball => ball != null)
-                    .OrderBy(collision => Vector2.Distance((Vector2)collision, oldPt));
+                    .OrderBy(collision => Vector2.Distance((Vector2)collision, vOld));
                 if (collisions.Count() > 0) {
-                    newPt = (Vector2)collisions.ElementAt(0);
+                    vNew = (Vector2)collisions.ElementAt(0);
                 }
             }
-            this.balls[this.pickBallIdx] = newPt;
+            this.balls[this.pickBallIdx] = vNew;
             this.CalcRoute();
             this.Refresh();
         }

@@ -4,22 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
-using System.Drawing;
 
 namespace Carom {
     class Glb {
-        // PointF => Vector2
-        public static Vector2 PointFToVector2(PointF pt) {
-            return new Vector2(pt.X, pt.Y);
-        }
-
-        // Vector2 => PointF
-        public static PointF Vector2ToPointF(Vector2 v) {
-            return new PointF(v.X, v.Y);
-        }
-
         // 원과 선분의 교점
-        public static Vector2 FindLineCircleIntersections (Vector2 cp, float cr, Vector2 p1, Vector2 p2) {
+        public static List<Vector2> FindCircleLineSegIntersections(Vector2 cp, float cr, Vector2 p1, Vector2 p2) {
             float a, b, c, det;
 
             Vector2 dP1P2 = p2 - p1;
@@ -31,23 +20,44 @@ namespace Carom {
 
             det = b * b - 4 * a * c;
 
-            if (det > 0) {
-                // Two solutions.
+            var result = new List<Vector2>();
+            
+            if (det < 0) {
+                // 교점 없음
+            } else if (det == 0) {
+                // 교점 하나(접점)
+                float t = (float)(-b / (2 * a));
+                Vector2 col = p1 + dP1P2*t;
+                if (t >= 0 && t <= 1) {
+                    // 교점이 선분 안에 포함
+                    //result.Add(col);
+                }
+            } else {
+                // 교점 두개
                 float t1 = (float)((-b - Math.Sqrt(det)) / (2 * a));
                 float t2 = (float)((-b + Math.Sqrt(det)) / (2 * a));
-                if (t1 >= 0 && t1 <= 1)
-                    return p1 + dP1P2*t1;
-                else if (t2 >= 0 && t2 <= 1)
-                    return p1 + dP1P2*t2;
-                else if (t1 < 0 && t2 > 1)
-                    return p1 + dP1P2*t2;
+                Vector2 col1 = p1 + dP1P2*t1;
+                Vector2 col2 = p1 + dP1P2*t2;
+                if (t1 >= 0 && t1 <= 1) {
+                    // 교점이 선분 안에 포함
+                    result.Add(col1);
+                }
+                if (t2 >= 0 && t2 <= 1) {
+                    // 교점이 선분 안에 포함
+                    //result.Add(col2);
+                }
             }
 
-            return p2;
+            return result;
         }
 
-        // 원과 점의 교점
-        public static Vector2? FindPointCircleIntersections (Vector2 cp, float cr, Vector2 p1) {
+        // 선분과 선분의 교점
+        public static Vector2? FindLineSegLineSegIntersections(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
+            return null;
+        }
+
+        // 원과 점의 충돌을 찾아서 원의 외곽으로 리턴
+        public static Vector2? FindCirclePointCollision(Vector2 cp, float cr, Vector2 p1) {
             var dist = Vector2.Distance(cp, p1);
             if (dist < cr)
                 return cp + Vector2.Normalize(p1-cp)*cr;
