@@ -8,7 +8,7 @@ using System.Numerics;
 namespace Carom {
     class Glb {
         // 원과 선분의 교점
-        public static Vector2? FindCircleLineSegIntersections(Vector2 cp, float cr, Vector2 p1, Vector2 p2) {
+        public static Vector2? FindCircleLineSegIntersection(Vector2 cp, float cr, Vector2 p1, Vector2 p2) {
             float a, b, c, det;
 
             Vector2 dP1P2 = p2 - p1;
@@ -126,7 +126,7 @@ namespace Carom {
             if (this.colPt == null)
                 this.reflectDir = null;
             else
-                this.reflectDir = Vector2.Normalize(Glb.GerReflectMirror((Vector2)this.colPt-p1, p4-p3));
+                this.reflectDir = Vector2.Normalize(Glb.GerReflectMirror(p2-p1, p4-p3));
         }
     }
 
@@ -138,11 +138,11 @@ namespace Carom {
             this.r = r;
         }
         public override void CheckCollision(Vector2 p1, Vector2 p2) {
-            this.colPt = Glb.FindCircleLineSegIntersections(cp, r, p1, p2);
+            this.colPt = Glb.FindCircleLineSegIntersection(cp, r, p1, p2);
             if (this.colPt == null)
                 this.reflectDir = null;
             else
-                this.reflectDir = Vector2.Normalize(Glb.GerSlidingNormal((Vector2)this.colPt-p1, this.cp-(Vector2)this.colPt));
+                this.reflectDir = Vector2.Normalize(Glb.GerSlidingNormal(p2-p1, this.cp-(Vector2)this.colPt));
         }
     }
 }

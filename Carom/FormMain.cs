@@ -69,7 +69,9 @@ namespace Carom {
                     p1 = colPt;
                     p2 = p1 + refDir * cueDist;
                     if (colObj is CollisionObjectCircle) {
-                        colObjs.Remove(colObj);
+                        bool removed = colObjs.Remove(colObj);
+                        if (removed == false)
+                            throw new Exception("Remove Failed");
                     }
                 }
             }
