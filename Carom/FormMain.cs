@@ -202,6 +202,7 @@ namespace Carom {
             this.DrawPoints(g);
             this.DrawBalls(g);
             this.DrawRoutes(g);
+            this.pbxTable.DrawCursorPixelInfo(g);
         }
 
         private void btnZoomFit_Click(object sender, EventArgs e) {

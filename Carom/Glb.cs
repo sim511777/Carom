@@ -27,30 +27,19 @@ namespace Carom {
                 return null;
             } else if (det == 0) {
                 // 교점 하나(접점)
-                return null;
                 float t = (float)(-b / (2 * a));
                 Vector2 col = p1 + dP1P2*t;
-                if (t >= 0 && t <= 1) {
-                    // 교점이 선분 안에 포함
-                    //result.Add(col);
-                }
+                return null;
             } else {
                 // 교점 두개
                 float t1 = (float)((-b - Math.Sqrt(det)) / (2 * a));
                 float t2 = (float)((-b + Math.Sqrt(det)) / (2 * a));
                 Vector2 col1 = p1 + dP1P2*t1;
                 Vector2 col2 = p1 + dP1P2*t2;
-                if (t1 >= 0 && t1 <= 1) {
-                    // 교점이 선분 안에 포함
-                    return col1;
-                    result.Add(col1);
-                }
+                if (t1 <= 0 || t1 >= 1)
+                    return null;
 
-                return null;
-                if (t2 >= 0 && t2 <= 1) {
-                    // 교점이 선분 안에 포함
-                    //result.Add(col2);
-                }
+                return col1;
             }
         }
 
@@ -64,9 +53,11 @@ namespace Carom {
             float _s = (p4.X-p3.X)*(p3.Y-p1.Y) - (p4.Y-p3.Y)*(p3.X-p1.X); 
  
             float t = _t/under;
-            float s = _s/under; 
- 
-            if(t<=0.0 || t>=1.0 || s<=0.0 || s>=1.0)    // 교점이 선분 밖에 있음
+            float s = _s/under;
+
+            if (s < 0 || s >= 1)    // 교점이 선분 밖에 있음
+                return null;
+            if (s == 0 && under > 0)
                 return null;
  
             float px = p3.X + t * (p4.X-p3.X);
