@@ -28,6 +28,10 @@
             this.btnZoomFit = new System.Windows.Forms.Button();
             this.grdProp = new System.Windows.Forms.PropertyGrid();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.btnRotAdd = new System.Windows.Forms.Button();
+            this.btnRotSub = new System.Windows.Forms.Button();
+            this.btnCueDisAdd = new System.Windows.Forms.Button();
+            this.btnCueDistSub = new System.Windows.Forms.Button();
             this.pbxTable = new Carom.ZoomPictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxTable)).BeginInit();
@@ -35,6 +39,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCueDistSub);
+            this.panel1.Controls.Add(this.btnCueDisAdd);
+            this.panel1.Controls.Add(this.btnRotSub);
+            this.panel1.Controls.Add(this.btnRotAdd);
             this.panel1.Controls.Add(this.btnInitBalls);
             this.panel1.Controls.Add(this.btnZoomFit);
             this.panel1.Controls.Add(this.grdProp);
@@ -47,9 +55,9 @@
             // btnInitBalls
             // 
             this.btnInitBalls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnInitBalls.Location = new System.Drawing.Point(87, 472);
+            this.btnInitBalls.Location = new System.Drawing.Point(108, 300);
             this.btnInitBalls.Name = "btnInitBalls";
-            this.btnInitBalls.Size = new System.Drawing.Size(75, 23);
+            this.btnInitBalls.Size = new System.Drawing.Size(96, 23);
             this.btnInitBalls.TabIndex = 2;
             this.btnInitBalls.Text = "Init Balls";
             this.btnInitBalls.UseVisualStyleBackColor = true;
@@ -58,9 +66,9 @@
             // btnZoomFit
             // 
             this.btnZoomFit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnZoomFit.Location = new System.Drawing.Point(6, 472);
+            this.btnZoomFit.Location = new System.Drawing.Point(6, 300);
             this.btnZoomFit.Name = "btnZoomFit";
-            this.btnZoomFit.Size = new System.Drawing.Size(75, 23);
+            this.btnZoomFit.Size = new System.Drawing.Size(96, 23);
             this.btnZoomFit.TabIndex = 1;
             this.btnZoomFit.Text = "Zoom Fit";
             this.btnZoomFit.UseVisualStyleBackColor = true;
@@ -74,7 +82,7 @@
             this.grdProp.Location = new System.Drawing.Point(0, 0);
             this.grdProp.Name = "grdProp";
             this.grdProp.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grdProp.Size = new System.Drawing.Size(258, 466);
+            this.grdProp.Size = new System.Drawing.Size(258, 294);
             this.grdProp.TabIndex = 0;
             this.grdProp.ToolbarVisible = false;
             this.grdProp.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdProp_PropertyValueChanged);
@@ -86,6 +94,46 @@
             this.statusStrip1.Size = new System.Drawing.Size(869, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // btnRotAdd
+            // 
+            this.btnRotAdd.Location = new System.Drawing.Point(6, 329);
+            this.btnRotAdd.Name = "btnRotAdd";
+            this.btnRotAdd.Size = new System.Drawing.Size(96, 23);
+            this.btnRotAdd.TabIndex = 3;
+            this.btnRotAdd.Text = "Cue Rotate +";
+            this.btnRotAdd.UseVisualStyleBackColor = true;
+            this.btnRotAdd.Click += new System.EventHandler(this.btnRotAdd_Click);
+            // 
+            // btnRotSub
+            // 
+            this.btnRotSub.Location = new System.Drawing.Point(6, 358);
+            this.btnRotSub.Name = "btnRotSub";
+            this.btnRotSub.Size = new System.Drawing.Size(96, 23);
+            this.btnRotSub.TabIndex = 4;
+            this.btnRotSub.Text = "Cue Rotate -";
+            this.btnRotSub.UseVisualStyleBackColor = true;
+            this.btnRotSub.Click += new System.EventHandler(this.btnRotSub_Click);
+            // 
+            // btnCueDisAdd
+            // 
+            this.btnCueDisAdd.Location = new System.Drawing.Point(108, 329);
+            this.btnCueDisAdd.Name = "btnCueDisAdd";
+            this.btnCueDisAdd.Size = new System.Drawing.Size(96, 23);
+            this.btnCueDisAdd.TabIndex = 5;
+            this.btnCueDisAdd.Text = "Cue Power +";
+            this.btnCueDisAdd.UseVisualStyleBackColor = true;
+            this.btnCueDisAdd.Click += new System.EventHandler(this.btnCueDisAdd_Click);
+            // 
+            // btnCueDistSub
+            // 
+            this.btnCueDistSub.Location = new System.Drawing.Point(108, 358);
+            this.btnCueDistSub.Name = "btnCueDistSub";
+            this.btnCueDistSub.Size = new System.Drawing.Size(96, 23);
+            this.btnCueDistSub.TabIndex = 6;
+            this.btnCueDistSub.Text = "Cue Power -";
+            this.btnCueDistSub.UseVisualStyleBackColor = true;
+            this.btnCueDistSub.Click += new System.EventHandler(this.btnCueDistSub_Click);
             // 
             // pbxTable
             // 
@@ -143,6 +191,10 @@
         private System.Windows.Forms.PropertyGrid grdProp;
         private System.Windows.Forms.Button btnZoomFit;
         private System.Windows.Forms.Button btnInitBalls;
+        private System.Windows.Forms.Button btnCueDistSub;
+        private System.Windows.Forms.Button btnCueDisAdd;
+        private System.Windows.Forms.Button btnRotSub;
+        private System.Windows.Forms.Button btnRotAdd;
     }
 }
 

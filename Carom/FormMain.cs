@@ -34,13 +34,45 @@ namespace Carom {
             this.Refresh();
         }
 
+        List<Vector2> routes = new List<Vector2>();
         private void CalcRoute() {
+            var cueDist = Settings.Default.CueDist;
             // 1. Cue1, Dir 볼로 Line생성
-            // do {
-            // 2. cushion 1,2,3,4 충돌 체크, ball 1,2,3 충돌 체크
-            // 3. 충돌이 있다 가장 가까운 충돌점, 반사벡터로 Line생성
-            // 4. ball 이 충돌이라면 충돌된 ball 은 충돌체크 아이템에서 제거
-            // } while (has collision)
+            var p1 = balls[0];
+            var p2 = p1 + Vector2.Normalize(balls[4]-p1)*cueDist;
+
+            float x1 = -Settings.Default.AreaWidth/2+Settings.Default.BallDiameter/2;
+            float x2 = +Settings.Default.AreaWidth/2-Settings.Default.BallDiameter/2;
+            float y1 = -Settings.Default.AreaHeight/2+Settings.Default.BallDiameter/2;
+            float y2 = +Settings.Default.AreaHeight/2-Settings.Default.BallDiameter/2;
+            
+            List<CollisionObject> colObjs = new List<CollisionObject>();
+            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y1), new Vector2(x1, y2)));
+            colObjs.Add(new CollisionObjectSegment(new Vector2(x2, y1), new Vector2(x2, y2)));
+            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y1), new Vector2(x2, y1)));
+            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y2), new Vector2(x2, y2)));
+            colObjs.AddRange(this.balls.Skip(1).Take(3).Select(ball => new CollisionObjectCircle(ball, Settings.Default.BallDiameter)));
+            
+            this.routes.Clear();
+            while (true) {
+                colObjs.ForEach(colObj => colObj.CheckCollision(p1, p2));
+                var total = colObjs.Where(colObj => colObj.colPt != null).OrderBy(colObj => Vector2.Distance(p1, (Vector2)colObj.colPt));
+                if (total.Count() == 0) {
+                    this.routes.Add(p2);
+                    break;
+                } else {
+                    var colObj = total.ElementAt(0);
+                    var colPt = (Vector2)colObj.colPt;
+                    var refDir = (Vector2)colObj.reflectDir;
+                    this.routes.Add(colPt);
+                    cueDist = cueDist - Vector2.Distance(p1, colPt); 
+                    p1 = colPt;
+                    p2 = p1 + refDir * cueDist;
+                    if (colObj is CollisionObjectCircle) {
+                        colObjs.Remove(colObj);
+                    }
+                }
+            }
         }
 
         private RectangleF WoodRect {
@@ -135,6 +167,18 @@ namespace Carom {
             g.DrawEllipse(Pens.Black, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[4], Settings.Default.BallDiameter)));
         }
 
+        private void DrawRoutes(Graphics g) {
+            List<PointF> drawRoutes = new List<PointF>();
+            drawRoutes.Add(this.pbxTable.RealToDraw(new PointF(this.balls[0].X, this.balls[0].Y)));
+            foreach (var route in this.routes) {
+                var rect = VectorToRect(route, Settings.Default.BallDiameter);
+                g.DrawEllipse(Pens.Yellow, pbxTable.RealToDrawRect(rect));
+                drawRoutes.Add(this.pbxTable.RealToDraw(new PointF(route.X, route.Y)));
+            }
+            
+            g.DrawLines(Pens.Yellow, drawRoutes.ToArray());
+        }
+
         private void ZoomToTable() {
             var fitRect = this.WoodRect;
             fitRect.Inflate(50, 50);
@@ -151,6 +195,7 @@ namespace Carom {
             this.DrawTable(g);
             this.DrawPoints(g);
             this.DrawBalls(g);
+            this.DrawRoutes(g);
         }
 
         private void btnZoomFit_Click(object sender, EventArgs e) {
@@ -158,6 +203,7 @@ namespace Carom {
         }
 
         private void grdProp_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) {
+            this.CalcRoute();
             this.pbxTable.Refresh();
         }
 
@@ -220,6 +266,41 @@ namespace Carom {
 
         private void btnInitBalls_Click(object sender, EventArgs e) {
             this.InitBalls();
+        }
+
+        private void AddCuePower(float val) {
+            Settings.Default.CueDist = (Settings.Default.CueDist + val).Range(10, 100000);
+            
+            this.grdProp.Refresh();
+            this.CalcRoute();
+            this.pbxTable.Refresh();
+        }
+
+        private void btnCueDisAdd_Click(object sender, EventArgs e) {
+            this.AddCuePower(100);
+        }
+
+        private void btnCueDistSub_Click(object sender, EventArgs e) {
+            this.AddCuePower(-100);
+        }
+
+        private void AddCueAngle(float val) {
+            var p1 = this.balls[0];
+            var p2 = this.balls[4];
+            float theta = (float)(Math.PI / 180 * val);
+            Matrix3x2 m = Matrix3x2.CreateRotation(theta, p1);
+            this.balls[4] = Vector2.Transform(p2, m);
+
+            this.CalcRoute();
+            this.pbxTable.Refresh();
+        }
+
+        private void btnRotAdd_Click(object sender, EventArgs e) {
+            this.AddCueAngle(0.1f);
+        }
+
+        private void btnRotSub_Click(object sender, EventArgs e) {
+            this.AddCueAngle(-0.1f);
         }
     }
 }
