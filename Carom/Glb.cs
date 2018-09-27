@@ -52,8 +52,23 @@ namespace Carom {
         }
 
         // 선분과 선분의 교점
-        public static Vector2? FindLineSegLineSegIntersections(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
-            return null;
+        Vector2? FindLineSegIntersection(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2) {
+            float under = (BP2.Y-BP1.Y)*(AP2.X-AP1.X)-(BP2.X-BP1.X)*(AP2.Y-AP1.Y);
+            if(under==0)    // 평행
+                return null;
+ 
+            float _t = (BP2.X-BP1.X)*(AP1.Y-BP1.Y) - (BP2.Y-BP1.Y)*(AP1.X-BP1.X);
+            float _s = (AP2.X-AP1.X)*(AP1.Y-BP1.Y) - (AP2.Y-AP1.Y)*(AP1.X-BP1.X); 
+ 
+            float t = _t/under;
+            float s = _s/under; 
+ 
+            if(t<=0.0 || t>=1.0 || s<=0.0 || s>=1.0)    // 교점이 선분 밖에 있음
+                return null;
+ 
+            float px = AP1.X + t * (AP2.X-AP1.X);
+            float py = AP1.Y + t * (AP2.Y-AP1.Y);
+            return new Vector2(px, py);
         }
 
         // 원과 점의 충돌을 찾아서 원의 외곽으로 리턴
