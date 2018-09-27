@@ -193,7 +193,7 @@ namespace Carom.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7000")]
         public float CueDist {
             get {
                 return ((float)(this["CueDist"]));

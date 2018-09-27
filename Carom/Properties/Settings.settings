@@ -45,7 +45,7 @@
       <Value Profile="(Default)">Red</Value>
     </Setting>
     <Setting Name="CueDist" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">5000</Value>
+      <Value Profile="(Default)">7000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

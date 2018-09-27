@@ -24,11 +24,11 @@ namespace Carom {
 
         private void InitBalls() {
             this.balls = new Vector2[] {
-                new Vector2(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 2),
-                new Vector2(Settings.Default.AreaWidth*3/8, 0),
+                new Vector2(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 1.1f),
+                new Vector2(Settings.Default.AreaWidth*4/8-Settings.Default.BallDiameter/2, 0),
                 new Vector2(Settings.Default.AreaWidth/4, 0),
                 new Vector2(-Settings.Default.AreaWidth/4, 0),
-                new Vector2(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter / 2),
+                new Vector2(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter * 0.8f),
             };
             this.CalcRoute();
             this.Refresh();
@@ -45,12 +45,16 @@ namespace Carom {
             float x2 = +Settings.Default.AreaWidth/2-Settings.Default.BallDiameter/2;
             float y1 = -Settings.Default.AreaHeight/2+Settings.Default.BallDiameter/2;
             float y2 = +Settings.Default.AreaHeight/2-Settings.Default.BallDiameter/2;
+            Vector2 vlt = new Vector2(x1, y1);
+            Vector2 vrt = new Vector2(x2, y1);
+            Vector2 vrb = new Vector2(x2, y2);
+            Vector2 vlb = new Vector2(x1, y2);
             
             List<CollisionObject> colObjs = new List<CollisionObject>();
-            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y1), new Vector2(x1, y2)));
-            colObjs.Add(new CollisionObjectSegment(new Vector2(x2, y1), new Vector2(x2, y2)));
-            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y1), new Vector2(x2, y1)));
-            colObjs.Add(new CollisionObjectSegment(new Vector2(x1, y2), new Vector2(x2, y2)));
+            colObjs.Add(new CollisionObjectSegment(vlt, vrt));
+            colObjs.Add(new CollisionObjectSegment(vrt, vrb));
+            colObjs.Add(new CollisionObjectSegment(vrb, vlb));
+            colObjs.Add(new CollisionObjectSegment(vlb, vlt));
             colObjs.AddRange(this.balls.Skip(1).Take(3).Select(ball => new CollisionObjectCircle(ball, Settings.Default.BallDiameter)));
             
             this.routes.Clear();
