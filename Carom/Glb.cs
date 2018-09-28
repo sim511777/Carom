@@ -34,9 +34,17 @@ namespace Carom {
                 // 교점 두개
                 float t1 = (float)((-b - Math.Sqrt(det)) / (2 * a));
                 float t2 = (float)((-b + Math.Sqrt(det)) / (2 * a));
+                float tt = 0;
+                if (Math.Abs(t1) > Math.Abs(t2)) {
+                    tt = t1;
+                    t1 = t2;
+                    t2 = tt;
+                }
                 Vector2 col1 = p1 + dP1P2*t1;
                 Vector2 col2 = p1 + dP1P2*t2;
-                if (t1 <= 0 || t1 >= 1)
+                if (t1 >= 1)
+                    return null;
+                if (t2 < 0)
                     return null;
 
                 return col1;

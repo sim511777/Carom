@@ -178,11 +178,11 @@ namespace Carom {
             drawRoutes.Add(this.pbxTable.RealToDraw(new PointF(this.balls[0].X, this.balls[0].Y)));
             foreach (var route in this.routes) {
                 var rect = VectorToRect(route, Settings.Default.BallDiameter);
-                g.DrawEllipse(Pens.Yellow, pbxTable.RealToDrawRect(rect));
+                g.DrawEllipse(Pens.Orange, pbxTable.RealToDrawRect(rect));
                 drawRoutes.Add(this.pbxTable.RealToDraw(new PointF(route.X, route.Y)));
             }
             
-            g.DrawLines(Pens.Yellow, drawRoutes.ToArray());
+            g.DrawLines(Pens.Orange, drawRoutes.ToArray());
         }
 
         private void ZoomToTable() {
