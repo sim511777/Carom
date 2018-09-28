@@ -8,7 +8,7 @@ using System.Numerics;
 namespace Carom {
     class Glb {
         // 원과 선분의 교점
-        public static Vector2? FindCircleLineSegIntersection(Vector2 p1, Vector2 p2, Vector2 cp, float cr) {
+        public static Vector2? FindLineCircleIntersection(Vector2 p1, Vector2 p2, Vector2 cp, float cr) {
             float a, b, c, det;
 
             Vector2 dP1P2 = p2 - p1;
@@ -44,7 +44,7 @@ namespace Carom {
         }
 
         // 선분과 선분의 교점
-        public static Vector2? FindLineSegIntersection(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
+        public static Vector2? FindLineLineIntersection(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
             float under = (p2.Y-p1.Y)*(p4.X-p3.X)-(p2.X-p1.X)*(p4.Y-p3.Y);
             if(under==0)    // 평행
                 return null;
@@ -113,7 +113,7 @@ namespace Carom {
             this.p4 = p4;
         }
         public override void CheckCollision(Vector2 p1, Vector2 p2) {
-            this.colPt = Glb.FindLineSegIntersection(p1, p2, p3, p4);
+            this.colPt = Glb.FindLineLineIntersection(p1, p2, p3, p4);
             if (this.colPt == null)
                 this.reflectDir = null;
             else
@@ -129,7 +129,7 @@ namespace Carom {
             this.r = r;
         }
         public override void CheckCollision(Vector2 p1, Vector2 p2) {
-            this.colPt = Glb.FindCircleLineSegIntersection(p1, p2, cp, r);
+            this.colPt = Glb.FindLineCircleIntersection(p1, p2, cp, r);
             if (this.colPt == null)
                 this.reflectDir = null;
             else
