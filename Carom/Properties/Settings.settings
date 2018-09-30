@@ -2,22 +2,22 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Carom.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AreaWidth" Type="System.Single" Scope="User">
+    <Setting Name="AreaWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2448</Value>
     </Setting>
-    <Setting Name="AreaHeight" Type="System.Single" Scope="User">
+    <Setting Name="AreaHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1224</Value>
     </Setting>
-    <Setting Name="BallDiameter" Type="System.Single" Scope="User">
+    <Setting Name="BallDiameter" Type="System.Double" Scope="User">
       <Value Profile="(Default)">65.5</Value>
     </Setting>
-    <Setting Name="CushinThickness" Type="System.Single" Scope="User">
+    <Setting Name="CushinThickness" Type="System.Double" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="WoodThickness" Type="System.Single" Scope="User">
+    <Setting Name="WoodThickness" Type="System.Double" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="PointDiameter" Type="System.Single" Scope="User">
+    <Setting Name="PointDiameter" Type="System.Double" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="CushonColor" Type="System.Drawing.Color" Scope="User">
@@ -44,7 +44,7 @@
     <Setting Name="ObjBall2Color" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Red</Value>
     </Setting>
-    <Setting Name="CueDist" Type="System.Single" Scope="User">
+    <Setting Name="CueDist" Type="System.Double" Scope="User">
       <Value Profile="(Default)">7000</Value>
     </Setting>
   </Settings>

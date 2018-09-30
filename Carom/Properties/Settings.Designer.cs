@@ -12,7 +12,7 @@ namespace Carom.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,9 +26,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2448")]
-        public float AreaWidth {
+        public double AreaWidth {
             get {
-                return ((float)(this["AreaWidth"]));
+                return ((double)(this["AreaWidth"]));
             }
             set {
                 this["AreaWidth"] = value;
@@ -38,9 +38,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1224")]
-        public float AreaHeight {
+        public double AreaHeight {
             get {
-                return ((float)(this["AreaHeight"]));
+                return ((double)(this["AreaHeight"]));
             }
             set {
                 this["AreaHeight"] = value;
@@ -50,9 +50,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("65.5")]
-        public float BallDiameter {
+        public double BallDiameter {
             get {
-                return ((float)(this["BallDiameter"]));
+                return ((double)(this["BallDiameter"]));
             }
             set {
                 this["BallDiameter"] = value;
@@ -62,9 +62,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public float CushinThickness {
+        public double CushinThickness {
             get {
-                return ((float)(this["CushinThickness"]));
+                return ((double)(this["CushinThickness"]));
             }
             set {
                 this["CushinThickness"] = value;
@@ -74,9 +74,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public float WoodThickness {
+        public double WoodThickness {
             get {
-                return ((float)(this["WoodThickness"]));
+                return ((double)(this["WoodThickness"]));
             }
             set {
                 this["WoodThickness"] = value;
@@ -86,9 +86,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public float PointDiameter {
+        public double PointDiameter {
             get {
-                return ((float)(this["PointDiameter"]));
+                return ((double)(this["PointDiameter"]));
             }
             set {
                 this["PointDiameter"] = value;
@@ -194,9 +194,9 @@ namespace Carom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("7000")]
-        public float CueDist {
+        public double CueDist {
             get {
-                return ((float)(this["CueDist"]));
+                return ((double)(this["CueDist"]));
             }
             set {
                 this["CueDist"] = value;
