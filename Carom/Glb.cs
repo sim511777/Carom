@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VectorD = System.Windows.Vector;
+using System.Windows;
 
 namespace Carom {
     class Glb {
         // 원과 선분의 교점
-        public static VectorD? FindLineCircleIntersection(VectorD p1, VectorD p2, VectorD cp, double cr) {
+        public static Vector? FindLineCircleIntersection(Vector p1, Vector p2, Vector cp, double cr) {
             double a, b, c, det;
 
-            VectorD dP1P2 = p2 - p1;
-            VectorD dCP1 = p1 - cp;
+            Vector dP1P2 = p2 - p1;
+            Vector dCP1 = p1 - cp;
 
             a = dP1P2.LengthSquared;
             b = 2 * (dP1P2 * dCP1);
@@ -20,7 +20,7 @@ namespace Carom {
 
             det = b * b - 4 * a * c;
 
-            var result = new List<VectorD>();
+            var result = new List<Vector>();
             
             if (det < 0) {
                 // 교점 없음
@@ -28,7 +28,7 @@ namespace Carom {
             } else if (det == 0) {
                 // 교점 하나(접점)
                 double t = (double)(-b / (2 * a));
-                VectorD col = p1 + dP1P2*t;
+                Vector col = p1 + dP1P2*t;
                 return null;
             } else {
                 // 교점 두개
@@ -40,8 +40,8 @@ namespace Carom {
                     t1 = t2;
                     t2 = tt;
                 }
-                VectorD col1 = p1 + dP1P2*t1;
-                VectorD col2 = p1 + dP1P2*t2;
+                Vector col1 = p1 + dP1P2*t1;
+                Vector col2 = p1 + dP1P2*t2;
                 if (t1 >= 1)
                     return null;
                 if (t2 < 0)
@@ -52,7 +52,7 @@ namespace Carom {
         }
 
         // 선분과 선분의 교점
-        public static VectorD? FindLineLineIntersection(VectorD p1, VectorD p2, VectorD p3, VectorD p4) {
+        public static Vector? FindLineLineIntersection(Vector p1, Vector p2, Vector p3, Vector p4) {
             double under = (p2.Y-p1.Y)*(p4.X-p3.X)-(p2.X-p1.X)*(p4.Y-p3.Y);
             if(under==0)    // 평행
                 return null;
@@ -70,11 +70,11 @@ namespace Carom {
  
             double px = p3.X + t * (p4.X-p3.X);
             double py = p3.Y + t * (p4.Y-p3.Y);
-            return new VectorD(px, py);
+            return new Vector(px, py);
         }
 
         // 원과 점의 충돌을 찾아서 원의 외곽으로 리턴
-        public static VectorD? FindCirclePointCollision(VectorD cp, double cr, VectorD p1) {
+        public static Vector? FindCirclePointCollision(Vector cp, double cr, Vector p1) {
             var dist = (cp - p1).Length;
             if (dist < cr) {
                 var v = p1-cp;
@@ -86,24 +86,24 @@ namespace Carom {
         }
 
         // 점과 직선의 거리
-        public static double Distance(VectorD p, double a, double b, double c) {
+        public static double Distance(Vector p, double a, double b, double c) {
             return Math.Abs(a*p.X + b*p.Y + c)/Math.Sqrt(a*a+b*b);
         }
 
         // 수선의 발
-        public static VectorD FootOfPerpendicular(VectorD p, VectorD dir, VectorD a) {
-            return p + VectorD.Multiply(((a-p) * dir)/dir.LengthSquared, dir);
+        public static Vector FootOfPerpendicular(Vector p, Vector dir, Vector a) {
+            return p + Vector.Multiply(((a-p) * dir)/dir.LengthSquared, dir);
         }
 
         // 반사 벡터 (반사면)
-        public static VectorD GerReflectMirror(VectorD p, VectorD mirror) {
+        public static Vector GerReflectMirror(Vector p, Vector mirror) {
             var n = mirror/mirror.Length;
             var r = (p * n) * n * 2 - p;
             return r;
         }
 
         // 반사 벡터 (반사면 법선)
-        public static VectorD GerSlidingNormal(VectorD p, VectorD norm) {
+        public static Vector GerSlidingNormal(Vector p, Vector norm) {
             var n = norm/norm.Length;
             var r = p - (p * n) * n;
             return r;
@@ -111,19 +111,19 @@ namespace Carom {
     }
 
     abstract class CollisionObject {
-        public VectorD? colPt = null;
-        public VectorD? reflectDir = null;
-        public abstract void CheckCollision(VectorD p1, VectorD p2);
+        public Vector? colPt = null;
+        public Vector? reflectDir = null;
+        public abstract void CheckCollision(Vector p1, Vector p2);
     }
 
     class CollisionObjectSegment : CollisionObject {
-        public VectorD p3;
-        public VectorD p4;
-        public CollisionObjectSegment(VectorD p3, VectorD p4) {
+        public Vector p3;
+        public Vector p4;
+        public CollisionObjectSegment(Vector p3, Vector p4) {
             this.p3 = p3;
             this.p4 = p4;
         }
-        public override void CheckCollision(VectorD p1, VectorD p2) {
+        public override void CheckCollision(Vector p1, Vector p2) {
             this.colPt = Glb.FindLineLineIntersection(p1, p2, p3, p4);
             if (this.colPt == null)
                 this.reflectDir = null;
@@ -136,18 +136,18 @@ namespace Carom {
     }
 
     class CollisionObjectCircle : CollisionObject {
-        public VectorD cp;
+        public Vector cp;
         public double r;
-        public CollisionObjectCircle(VectorD cp, double r) {
+        public CollisionObjectCircle(Vector cp, double r) {
             this.cp = cp;
             this.r = r;
         }
-        public override void CheckCollision(VectorD p1, VectorD p2) {
+        public override void CheckCollision(Vector p1, Vector p2) {
             this.colPt = Glb.FindLineCircleIntersection(p1, p2, cp, r);
             if (this.colPt == null)
                 this.reflectDir = null;
             else {
-                var v = Glb.GerSlidingNormal(p2-p1, this.cp-(VectorD)this.colPt);
+                var v = Glb.GerSlidingNormal(p2-p1, this.cp-(Vector)this.colPt);
                 v.Normalize();
                 this.reflectDir = v;
             }

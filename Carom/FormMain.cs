@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using Carom.Properties;
-using VectorD = System.Windows.Vector;
-using MatrixD = System.Windows.Media.Matrix;
+using System.Windows;
 
 namespace Carom {
     public partial class FormMain : Form {
-        VectorD[] balls;    // Cue1, Cue2, Obj1, Obj2, Dir
+        Vector[] balls;    // Cue1, Cue2, Obj1, Obj2, Dir
 
         public FormMain() {
             InitializeComponent();
@@ -24,18 +23,18 @@ namespace Carom {
         }
 
         private void InitBalls() {
-            this.balls = new VectorD[] {
-                new VectorD(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 1.1f),
-                new VectorD(Settings.Default.AreaWidth*4/8-Settings.Default.BallDiameter/2, 0),
-                new VectorD(Settings.Default.AreaWidth/4, 0),
-                new VectorD(-Settings.Default.AreaWidth/4, 0),
-                new VectorD(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter * 0.8f),
+            this.balls = new Vector[] {
+                new Vector(-Settings.Default.AreaWidth/4, Settings.Default.BallDiameter * 1.1f),
+                new Vector(Settings.Default.AreaWidth*4/8-Settings.Default.BallDiameter/2, 0),
+                new Vector(Settings.Default.AreaWidth/4, 0),
+                new Vector(-Settings.Default.AreaWidth/4, 0),
+                new Vector(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter * 0.8f),
             };
             this.CalcRoute();
             this.Refresh();
         }
 
-        List<VectorD> routes = new List<VectorD>();
+        List<Vector> routes = new List<Vector>();
         private void CalcRoute() {
             var cueDist = Settings.Default.CueDist;
             // 1. Cue1, Dir 볼로 Line생성
@@ -48,10 +47,10 @@ namespace Carom {
             double x2 = +Settings.Default.AreaWidth/2-Settings.Default.BallDiameter/2;
             double y1 = -Settings.Default.AreaHeight/2+Settings.Default.BallDiameter/2;
             double y2 = +Settings.Default.AreaHeight/2-Settings.Default.BallDiameter/2;
-            VectorD vlt = new VectorD(x1, y1);
-            VectorD vrt = new VectorD(x2, y1);
-            VectorD vrb = new VectorD(x2, y2);
-            VectorD vlb = new VectorD(x1, y2);
+            Vector vlt = new Vector(x1, y1);
+            Vector vrt = new Vector(x2, y1);
+            Vector vrb = new Vector(x2, y2);
+            Vector vlb = new Vector(x1, y2);
             
             List<CollisionObject> colObjs = new List<CollisionObject>();
             colObjs.Add(new CollisionObjectSegment(vlt, vrt));
@@ -63,14 +62,14 @@ namespace Carom {
             this.routes.Clear();
             while (true) {
                 colObjs.ForEach(colObj => colObj.CheckCollision(p1, p2));
-                var total = colObjs.Where(colObj => colObj.colPt != null).OrderBy(colObj => (p1 - (VectorD)colObj.colPt).Length);
+                var total = colObjs.Where(colObj => colObj.colPt != null).OrderBy(colObj => (p1 - (Vector)colObj.colPt).Length);
                 if (total.Count() == 0) {
                     this.routes.Add(p2);
                     break;
                 } else {
                     var colObj = total.ElementAt(0);
-                    var colPt = (VectorD)colObj.colPt;
-                    var refDir = (VectorD)colObj.reflectDir;
+                    var colPt = (Vector)colObj.colPt;
+                    var refDir = (Vector)colObj.reflectDir;
                     this.routes.Add(colPt);
                     cueDist = cueDist - (p1 - colPt).Length; 
                     p1 = colPt;
@@ -133,16 +132,16 @@ namespace Carom {
         private void DrawPoints(Graphics g) {
             Brush brPoint = new SolidBrush(Settings.Default.PointColor);
             
-            List<VectorD> pointPts = new List<VectorD>();
+            List<Vector> pointPts = new List<Vector>();
             double xStep = Settings.Default.AreaWidth / 8;
             for (int i=-4; i<=4; i++) {
-                pointPts.Add(new VectorD(xStep*i, -Settings.Default.AreaHeight/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2));
-                pointPts.Add(new VectorD(xStep*i, Settings.Default.AreaHeight/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2));
+                pointPts.Add(new Vector(xStep*i, -Settings.Default.AreaHeight/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2));
+                pointPts.Add(new Vector(xStep*i, Settings.Default.AreaHeight/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2));
             }
             double yStep = Settings.Default.AreaHeight / 4;
             for (int i=-2; i<=2; i++) {
-                pointPts.Add(new VectorD(-Settings.Default.AreaWidth/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2, yStep*i));
-                pointPts.Add(new VectorD(Settings.Default.AreaWidth/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2, yStep*i));
+                pointPts.Add(new Vector(-Settings.Default.AreaWidth/2-Settings.Default.CushinThickness-Settings.Default.WoodThickness/2, yStep*i));
+                pointPts.Add(new Vector(Settings.Default.AreaWidth/2+Settings.Default.CushinThickness+Settings.Default.WoodThickness/2, yStep*i));
             }
             foreach (var pointPt in pointPts) {
                 var realRect = this.VectorToRect(pointPt, (float)Settings.Default.PointDiameter);
@@ -153,7 +152,7 @@ namespace Carom {
             brPoint.Dispose();
         }
 
-        private RectangleF VectorToRect(VectorD v, float size) {
+        private RectangleF VectorToRect(Vector v, float size) {
             return new RectangleF((float)(v.X-size/2), (float)(v.Y-size/2), size, size);
         }
 
@@ -218,11 +217,11 @@ namespace Carom {
         }
 
         int pickBallIdx = -1;
-        VectorD pickOffset;
-        VectorD pickPt;
+        Vector pickOffset;
+        Vector pickPt;
         private void pbxTable_MouseDown(object sender, MouseEventArgs e) {
             var ptReal = this.pbxTable.DrawToReal(e.Location);
-            var vReal = new VectorD(ptReal.X, ptReal.Y);
+            var vReal = new Vector(ptReal.X, ptReal.Y);
             int closestIdx = -1;
             double closestDistSq = double.MaxValue;
             for (int i=0; i<this.balls.Length; i++) {
@@ -253,7 +252,7 @@ namespace Carom {
                 return;
             var vOld = this.balls[this.pickBallIdx];
             var ptNew = this.pbxTable.DrawToReal(e.Location);
-            var vNew = new VectorD(ptNew.X, ptNew.Y) + this.pickOffset;
+            var vNew = new Vector(ptNew.X, ptNew.Y) + this.pickOffset;
 
             if (this.pickBallIdx != 4) {
                 vNew.X = vNew.X.Range(-Settings.Default.AreaWidth/2 + Settings.Default.BallDiameter/2, Settings.Default.AreaWidth/2 - Settings.Default.BallDiameter/2);
@@ -264,9 +263,9 @@ namespace Carom {
                     .Where((ball, idx) => idx != pickBallIdx && idx != 4)
                     .Select(ball => Glb.FindCirclePointCollision(ball, Settings.Default.BallDiameter, vNew))
                     .Where(ball => ball != null)
-                    .OrderBy(collision => ((VectorD)collision - vOld).Length);
+                    .OrderBy(collision => ((Vector)collision - vOld).Length);
                 if (collisions.Count() > 0) {
-                    vNew = (VectorD)collisions.ElementAt(0);
+                    vNew = (Vector)collisions.ElementAt(0);
                 }
             }
             this.balls[this.pickBallIdx] = vNew;
@@ -298,7 +297,7 @@ namespace Carom {
             var p1 = this.balls[0];
             var p2 = this.balls[4];
             double theta = (Math.PI / 180 * val);
-            MatrixD m = new MatrixD();
+            var m = new System.Windows.Media.Matrix();
             m.RotateAt(theta, p1.X, p1.Y);
             this.balls[4] = p2 * m;
 
