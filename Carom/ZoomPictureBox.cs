@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Numerics;
 
 namespace Carom {
     public class ZoomPictureBox : PictureBox {
@@ -255,10 +254,13 @@ namespace Carom {
             float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
             var zoomTemp = (this.Zoom * factor).Range(this.ZoomMin, this.ZoomMax);
             factor = zoomTemp / this.Zoom;
-            Vector2 vM = new Vector2(e.Location.X, e.Location.Y);
-            Vector2 vI = new Vector2(this.Pan.Width, this.Pan.Height);
-            Vector2 vI2 = (vI - vM) * factor + vM;
-            this.Pan = new SizeF((float)vI2.X, (float)vI2.Y);
+            SizeF vM = new SizeF(e.Location);
+            SizeF vI = this.Pan;
+            SizeF vI2 = (vI - vM);
+            vI2.Width *= factor;
+            vI2.Height *= factor;
+            vI2 += vM;
+            this.Pan = vI2;
             this.Zoom *= factor;
             this.Invalidate();
         }
