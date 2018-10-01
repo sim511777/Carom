@@ -32,7 +32,7 @@
             this.btnZoomFit = new System.Windows.Forms.Button();
             this.grdProp = new System.Windows.Forms.PropertyGrid();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.pbxTable = new Carom.ZoomPictureBox();
+            this.pbxTable = new ShimLib.ZoomPictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxTable)).BeginInit();
@@ -196,7 +196,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private ZoomPictureBox pbxTable;
+        private ShimLib.ZoomPictureBox pbxTable;
         private System.Windows.Forms.PropertyGrid grdProp;
         private System.Windows.Forms.Button btnZoomFit;
         private System.Windows.Forms.Button btnInitBalls;

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using Carom.Properties;
 using System.Windows;
+using ShimLib;
 
 namespace Carom {
     public partial class FormMain : Form {
