@@ -300,6 +300,8 @@ v1.0.0.0
 
         // 마우스 줌
         protected override void OnMouseWheel(MouseEventArgs e) {
+            base.OnMouseWheel(e);
+
             if (this.EnableWheelZoom == false)
                 return;
             float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
@@ -314,14 +316,14 @@ v1.0.0.0
             this.Pan = vI2;
             this.Zoom *= factor;
             this.Invalidate();
-
-            base.OnMouseWheel(e);
         }
 
         // 마우스로 이미지 이동
         private bool mousePan = false;
         private Point ptOld = new Point();
         protected override void OnMouseDown(MouseEventArgs e) {
+            base.OnMouseDown(e);
+
             if (this.EnableMousePan == false)
                 return;
 
@@ -329,11 +331,11 @@ v1.0.0.0
                 return;
             this.mousePan = true;
             this.ptOld = e.Location;
-
-            base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e) {
+            base.OnMouseUp(e);
+
             this.mousePan = false;
 
             if (this.EnableMousePan == false)
@@ -341,18 +343,16 @@ v1.0.0.0
 
             if (e.Button != MouseButtons.Left)
                 return;
-
-            base.OnMouseUp(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
+            base.OnMouseMove(e);
+
             if (this.EnableMousePan && this.mousePan) {
                 this.Pan += (Size)e.Location - (Size)this.ptOld;
                 this.ptOld = e.Location;
             }
             this.Invalidate();
-
-            base.OnMouseMove(e);
         }
     }
 
