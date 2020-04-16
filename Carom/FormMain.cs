@@ -269,6 +269,10 @@ namespace Carom {
                 if (collisions.Count() > 0) {
                     vNew = (Vector)collisions.ElementAt(0);
                 }
+            } else {
+                var vCollison = Glb.FindCirclePointCollision(balls[0], Settings.Default.BallDiameter, vNew);
+                if (vCollison != null)
+                    vNew = (Vector)vCollison;
             }
             this.balls[this.pickBallIdx] = vNew;
             this.CalcRoute();
