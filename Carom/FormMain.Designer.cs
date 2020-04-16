@@ -24,16 +24,17 @@
         /// </summary>
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCueDistSub = new System.Windows.Forms.Button();
-            this.btnCueDisAdd = new System.Windows.Forms.Button();
-            this.btnRotSub = new System.Windows.Forms.Button();
-            this.btnRotAdd = new System.Windows.Forms.Button();
-            this.btnInitBalls = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.btnZoomFit = new System.Windows.Forms.Button();
+            this.btnCueDistSub = new System.Windows.Forms.Button();
+            this.btnInitBalls = new System.Windows.Forms.Button();
+            this.btnCueDisAdd = new System.Windows.Forms.Button();
+            this.btnRotAdd = new System.Windows.Forms.Button();
+            this.btnRotSub = new System.Windows.Forms.Button();
             this.grdProp = new System.Windows.Forms.PropertyGrid();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.chkShowRoute = new System.Windows.Forms.CheckBox();
             this.pbxTable = new ShimLib.ZoomPictureBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -48,6 +49,31 @@
             this.panel1.Size = new System.Drawing.Size(258, 456);
             this.panel1.TabIndex = 0;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.chkShowRoute);
+            this.panel2.Controls.Add(this.btnZoomFit);
+            this.panel2.Controls.Add(this.btnCueDistSub);
+            this.panel2.Controls.Add(this.btnInitBalls);
+            this.panel2.Controls.Add(this.btnCueDisAdd);
+            this.panel2.Controls.Add(this.btnRotAdd);
+            this.panel2.Controls.Add(this.btnRotSub);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 294);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(258, 162);
+            this.panel2.TabIndex = 7;
+            // 
+            // btnZoomFit
+            // 
+            this.btnZoomFit.Location = new System.Drawing.Point(6, 6);
+            this.btnZoomFit.Name = "btnZoomFit";
+            this.btnZoomFit.Size = new System.Drawing.Size(96, 23);
+            this.btnZoomFit.TabIndex = 1;
+            this.btnZoomFit.Text = "Zoom Fit";
+            this.btnZoomFit.UseVisualStyleBackColor = true;
+            this.btnZoomFit.Click += new System.EventHandler(this.btnZoomFit_Click);
+            // 
             // btnCueDistSub
             // 
             this.btnCueDistSub.Location = new System.Drawing.Point(108, 64);
@@ -57,36 +83,6 @@
             this.btnCueDistSub.Text = "Cue Power -";
             this.btnCueDistSub.UseVisualStyleBackColor = true;
             this.btnCueDistSub.Click += new System.EventHandler(this.btnCueDistSub_Click);
-            // 
-            // btnCueDisAdd
-            // 
-            this.btnCueDisAdd.Location = new System.Drawing.Point(108, 35);
-            this.btnCueDisAdd.Name = "btnCueDisAdd";
-            this.btnCueDisAdd.Size = new System.Drawing.Size(96, 23);
-            this.btnCueDisAdd.TabIndex = 5;
-            this.btnCueDisAdd.Text = "Cue Power +";
-            this.btnCueDisAdd.UseVisualStyleBackColor = true;
-            this.btnCueDisAdd.Click += new System.EventHandler(this.btnCueDisAdd_Click);
-            // 
-            // btnRotSub
-            // 
-            this.btnRotSub.Location = new System.Drawing.Point(6, 64);
-            this.btnRotSub.Name = "btnRotSub";
-            this.btnRotSub.Size = new System.Drawing.Size(96, 23);
-            this.btnRotSub.TabIndex = 4;
-            this.btnRotSub.Text = "Cue Rotate -";
-            this.btnRotSub.UseVisualStyleBackColor = true;
-            this.btnRotSub.Click += new System.EventHandler(this.btnRotSub_Click);
-            // 
-            // btnRotAdd
-            // 
-            this.btnRotAdd.Location = new System.Drawing.Point(6, 35);
-            this.btnRotAdd.Name = "btnRotAdd";
-            this.btnRotAdd.Size = new System.Drawing.Size(96, 23);
-            this.btnRotAdd.TabIndex = 3;
-            this.btnRotAdd.Text = "Cue Rotate +";
-            this.btnRotAdd.UseVisualStyleBackColor = true;
-            this.btnRotAdd.Click += new System.EventHandler(this.btnRotAdd_Click);
             // 
             // btnInitBalls
             // 
@@ -98,15 +94,35 @@
             this.btnInitBalls.UseVisualStyleBackColor = true;
             this.btnInitBalls.Click += new System.EventHandler(this.btnInitBalls_Click);
             // 
-            // btnZoomFit
+            // btnCueDisAdd
             // 
-            this.btnZoomFit.Location = new System.Drawing.Point(6, 6);
-            this.btnZoomFit.Name = "btnZoomFit";
-            this.btnZoomFit.Size = new System.Drawing.Size(96, 23);
-            this.btnZoomFit.TabIndex = 1;
-            this.btnZoomFit.Text = "Zoom Fit";
-            this.btnZoomFit.UseVisualStyleBackColor = true;
-            this.btnZoomFit.Click += new System.EventHandler(this.btnZoomFit_Click);
+            this.btnCueDisAdd.Location = new System.Drawing.Point(108, 35);
+            this.btnCueDisAdd.Name = "btnCueDisAdd";
+            this.btnCueDisAdd.Size = new System.Drawing.Size(96, 23);
+            this.btnCueDisAdd.TabIndex = 5;
+            this.btnCueDisAdd.Text = "Cue Power +";
+            this.btnCueDisAdd.UseVisualStyleBackColor = true;
+            this.btnCueDisAdd.Click += new System.EventHandler(this.btnCueDisAdd_Click);
+            // 
+            // btnRotAdd
+            // 
+            this.btnRotAdd.Location = new System.Drawing.Point(6, 35);
+            this.btnRotAdd.Name = "btnRotAdd";
+            this.btnRotAdd.Size = new System.Drawing.Size(96, 23);
+            this.btnRotAdd.TabIndex = 3;
+            this.btnRotAdd.Text = "Cue Rotate +";
+            this.btnRotAdd.UseVisualStyleBackColor = true;
+            this.btnRotAdd.Click += new System.EventHandler(this.btnRotAdd_Click);
+            // 
+            // btnRotSub
+            // 
+            this.btnRotSub.Location = new System.Drawing.Point(6, 64);
+            this.btnRotSub.Name = "btnRotSub";
+            this.btnRotSub.Size = new System.Drawing.Size(96, 23);
+            this.btnRotSub.TabIndex = 4;
+            this.btnRotSub.Text = "Cue Rotate -";
+            this.btnRotSub.UseVisualStyleBackColor = true;
+            this.btnRotSub.Click += new System.EventHandler(this.btnRotSub_Click);
             // 
             // grdProp
             // 
@@ -128,6 +144,17 @@
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // chkShowRoute
+            // 
+            this.chkShowRoute.AutoSize = true;
+            this.chkShowRoute.Location = new System.Drawing.Point(6, 93);
+            this.chkShowRoute.Name = "chkShowRoute";
+            this.chkShowRoute.Size = new System.Drawing.Size(92, 16);
+            this.chkShowRoute.TabIndex = 7;
+            this.chkShowRoute.Text = "Show Route";
+            this.chkShowRoute.UseVisualStyleBackColor = true;
+            this.chkShowRoute.CheckedChanged += new System.EventHandler(this.chkShowRoute_CheckedChanged);
+            // 
             // pbxTable
             // 
             this.pbxTable.AutoDrawCenterLine = false;
@@ -137,6 +164,7 @@
             this.pbxTable.AxisYInvert = false;
             this.pbxTable.BackColor = System.Drawing.Color.Gray;
             this.pbxTable.CenterLineColor = System.Drawing.Color.Yellow;
+            this.pbxTable.CenterLineDotStyle = System.Drawing.Drawing2D.DashStyle.Dot;
             this.pbxTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbxTable.DrawingImage = null;
             this.pbxTable.DrawPixelValueZoom = 20F;
@@ -158,20 +186,6 @@
             this.pbxTable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbxTable_MouseMove);
             this.pbxTable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbxTable_MouseUp);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.btnZoomFit);
-            this.panel2.Controls.Add(this.btnCueDistSub);
-            this.panel2.Controls.Add(this.btnInitBalls);
-            this.panel2.Controls.Add(this.btnCueDisAdd);
-            this.panel2.Controls.Add(this.btnRotAdd);
-            this.panel2.Controls.Add(this.btnRotSub);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 294);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(258, 162);
-            this.panel2.TabIndex = 7;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -185,6 +199,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,6 +218,7 @@
         private System.Windows.Forms.Button btnRotSub;
         private System.Windows.Forms.Button btnRotAdd;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox chkShowRoute;
     }
 }
 

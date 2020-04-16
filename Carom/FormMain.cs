@@ -32,7 +32,7 @@ namespace Carom {
                 new Vector(Settings.Default.AreaWidth/4, -Settings.Default.BallDiameter * 0.8f),
             };
             this.CalcRoute();
-            this.Refresh();
+            this.pbxTable.Refresh();
         }
 
         List<Vector> routes = new List<Vector>();
@@ -204,7 +204,8 @@ namespace Carom {
             this.DrawTable(g);
             this.DrawPoints(g);
             this.DrawBalls(g);
-            this.DrawRoutes(g);
+            if (this.chkShowRoute.Checked)
+                this.DrawRoutes(g);
             this.pbxTable.DrawCursorPixelInfo(g);
         }
 
@@ -271,7 +272,7 @@ namespace Carom {
             }
             this.balls[this.pickBallIdx] = vNew;
             this.CalcRoute();
-            this.Refresh();
+            this.pbxTable.Refresh();
         }
 
         private void btnInitBalls_Click(object sender, EventArgs e) {
@@ -312,6 +313,10 @@ namespace Carom {
 
         private void btnRotSub_Click(object sender, EventArgs e) {
             this.AddCueAngle(-0.1f);
+        }
+
+        private void chkShowRoute_CheckedChanged(object sender, EventArgs e) {
+            this.pbxTable.Refresh();
         }
     }
 }
