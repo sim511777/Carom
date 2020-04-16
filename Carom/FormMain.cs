@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
+//using System.Drawing.Drawing2D;
 using Carom.Properties;
 using System.Windows;
+using System.Windows.Media;
 using ShimLib;
 
 namespace Carom {
@@ -174,6 +175,28 @@ namespace Carom {
             brObj2.Dispose();
 
             g.DrawEllipse(Pens.Black, this.pbxTable.RealToDrawRect(this.VectorToRect(this.balls[4], (float)Settings.Default.BallDiameter)));
+            
+            float r = (float)Settings.Default.BallDiameter / 2;
+            Vector dvCue = balls[4] - balls[0];
+            var dist = dvCue.Length;
+            Vector[] pts = {
+                new Vector { X = 0, Y = r },
+                new Vector { X = dist, Y = r },
+                new Vector { X = dist, Y = -r },
+                new Vector { X = 0, Y = -r },
+            };
+
+            var theta = -Vector.AngleBetween(dvCue, new Vector(1, 0));
+            
+            Matrix m = Matrix.Identity;
+            m.Rotate(theta);
+            m.Transform(pts);
+            var polygon = pts.Select(pt => pt + balls[0]).Select(pt => this.pbxTable.RealToDraw(new PointF((float)pt.X, (float)pt.Y))).ToArray();
+            Pen pen = new Pen(Color.Black);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            g.DrawLine(pen, polygon[0], polygon[1]);
+            g.DrawLine(pen, polygon[2], polygon[3]);
+            pen.Dispose();
         }
 
         private void DrawRoutes(Graphics g) {
@@ -200,7 +223,7 @@ namespace Carom {
 
         private void pbxTable_Paint(object sender, PaintEventArgs e) {
             Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             this.DrawTable(g);
             this.DrawPoints(g);
             this.DrawBalls(g);

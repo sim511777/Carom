@@ -135,7 +135,7 @@ v1.0.0.0
         public PointF RealToDraw(PointF ptReal) {
             float wndX = ptReal.X * this.Zoom + this.Pan.Width;
             float wndY = ptReal.Y * this.Zoom + this.Pan.Height;
-            return new PointF((int)wndX, (int)wndY);
+            return new PointF(wndX, wndY);
         }
 
         public float RealToDrawX(float x) {
