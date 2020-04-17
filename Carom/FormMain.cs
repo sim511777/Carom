@@ -36,6 +36,7 @@ namespace Carom {
             this.pbxTable.Refresh();
         }
 
+        private CollisionObjectCircle firstCollisonObjectCircle = null;
         List<Vector> routes = new List<Vector>();
         private void CalcRoute() {
             var cueDist = Settings.Default.CueDist;
@@ -62,6 +63,8 @@ namespace Carom {
             colObjs.AddRange(this.balls.Skip(1).Take(3).Select(ball => new CollisionObjectCircle(ball, Settings.Default.BallDiameter)));
             
             this.routes.Clear();
+            firstCollisonObjectCircle = null;
+            bool first = true;
             while (true) {
                 colObjs.ForEach(colObj => colObj.CheckCollision(p1, p2));
                 var total = colObjs.Where(colObj => colObj.colPt != null).OrderBy(colObj => (p1 - (Vector)colObj.colPt).Length);
@@ -73,6 +76,11 @@ namespace Carom {
                     var colPt = (Vector)colObj.colPt;
                     var refDir = (Vector)colObj.reflectDir;
                     this.routes.Add(colPt);
+                    if (first == true) {
+                        if (colObj is CollisionObjectCircle)
+                            firstCollisonObjectCircle = colObj as CollisionObjectCircle;
+                        first = false;
+                    }
                     cueDist = cueDist - (p1 - colPt).Length; 
                     p1 = colPt;
                     p2 = p1 + refDir * cueDist;
